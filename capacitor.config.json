@@ -1,0 +1,9 @@
+{
+  "appId": "com.rrrrro.dailybible",
+  "appName": "DailyBible",
+  "webDir": "www",
+  "server": {
+    "url": "https://www.wondaero.github.io/daily-bible",
+    "cleartext": true
+  }
+}

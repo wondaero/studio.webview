@@ -1,0 +1,6 @@
+{
+  "appName": "DailyBible",
+  "packageName": "com.rrrrro.dailybible",
+  "remoteUrl": "https://www.wondaero.github.io/daily-bible",
+  "offlineFallback": true
+}

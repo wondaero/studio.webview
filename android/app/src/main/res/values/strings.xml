@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DailyBible</string>
+    <string name="title_activity_main">DailyBible</string>
+    <string name="package_name">com.rrrrro.dailybible</string>
+    <string name="custom_url_scheme">com.rrrrro.dailybible</string>
+</resources>

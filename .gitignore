@@ -1,0 +1,16 @@
+# Dependency directories
+node_modules/
+
+# Build outputs
+build-output/
+android/app/build/
+android/.gradle/
+android/local.properties
+
+# Local configuration overrides
+.env
+.env.*
+
+# OS generated files
+.DS_Store
+Thumbs.db

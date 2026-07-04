@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>webViewStudio Core Template</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #1e1b4b 100%);
+      --card-bg: rgba(17, 24, 39, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --neon-cyan: #06b6d4;
+      --neon-purple: #8b5cf6;
+      --neon-green: #10b981;
+      --neon-orange: #f59e0b;
+      --neon-red: #ef4444;
+      --glow-cyan: rgba(6, 182, 212, 0.4);
+      --glow-purple: rgba(139, 92, 246, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background Glows */
+    .bg-glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: -1;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .bg-glow-1 {
+      top: 10%;
+      left: 10%;
+      background: var(--neon-cyan);
+      animation: float-slow 15s infinite alternate;
+    }
+    .bg-glow-2 {
+      bottom: 10%;
+      right: 10%;
+      background: var(--neon-purple);
+      animation: float-slow 20s infinite alternate-reverse;
+    }
+
+    @keyframes float-slow {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(50px, 50px) scale(1.2); }
+    }
+
+    /* Glassmorphic Container */
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 35px 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+      animation: fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Header Styling */
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      box-shadow: 0 0 20px var(--glow-cyan);
+      animation: pulse-glow 3s infinite;
+    }
+
+    .logo-container svg {
+      width: 32px;
+      height: 32px;
+      fill: white;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 15px var(--glow-cyan); }
+      50% { box-shadow: 0 0 25px var(--glow-purple); }
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, #ffffff, #d1d5db);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 300;
+    }
+
+    /* Status Grid */
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .status-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 16px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    .status-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .status-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+
+    .status-value {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-cyan { background-color: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+    .dot-purple { background-color: var(--neon-purple); box-shadow: 0 0 8px var(--neon-purple); }
+    .dot-green { background-color: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
+    .dot-orange { background-color: var(--neon-orange); box-shadow: 0 0 8px var(--neon-orange); }
+    .dot-red { background-color: var(--neon-red); box-shadow: 0 0 8px var(--neon-red); }
+
+    /* Detail List */
+    .details {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 13px;
+    }
+
+    .detail-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .detail-item:first-child {
+      padding-top: 0;
+    }
+
+    .detail-key {
+      color: var(--text-secondary);
+    }
+
+    .detail-val {
+      font-weight: 600;
+      word-break: break-all;
+      text-align: right;
+      max-width: 60%;
+    }
+
+    /* Action Area */
+    .action-container {
+      text-align: center;
+    }
+
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+      border: none;
+      border-radius: 14px;
+      color: white;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+      fill: white;
+    }
+
+    .footer-note {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 20px;
+      text-align: center;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Glow Elements -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo-container">
+        <!-- SVG Web/Mobile Studio Icon -->
+        <svg viewBox="0 0 24 24">
+          <path d="M4,6H20V16H4M20,18A2,2 0 0,0 22,16V6C22,4.89 21.1,4 20,4H4C2.89,4 2,4.89 2,6V16A2,2 0 0,0 4,18H0V20H24V18H20M15,22H9V21H15V22Z" />
+        </svg>
+      </div>
+      <h1 id="app-title">webViewStudio</h1>
+      <p class="subtitle" id="app-subtitle">Capacitor Webview Engine</p>
+    </div>
+
+    <!-- Status Cards Grid -->
+    <div class="status-grid">
+      <div class="status-card">
+        <span class="status-label">Network</span>
+        <span class="status-value" id="net-status">
+          <span class="dot dot-green" id="net-dot"></span>
+          <span id="net-text">Online</span>
+        </span>
+      </div>
+      <div class="status-card">
+        <span class="status-label">Service Worker</span>
+        <span class="status-value" id="sw-status">
+          <span class="dot dot-orange" id="sw-dot"></span>
+          <span id="sw-text">Checking...</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Device details -->
+    <div class="details">
+      <div class="detail-item">
+        <span class="detail-key">App Name</span>
+        <span class="detail-val" id="meta-appname">webViewStudio</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-key">Package ID</span>
+        <span class="detail-val" id="meta-packageid">com.rrrrro.webviewstudio</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-key">Core Version</span>
+        <span class="detail-val">1.0.0 (Capacitor)</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-key">Target Mode</span>
+        <span class="detail-val" id="meta-target">Local Assets</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-container">
+      <button class="btn" id="refresh-btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" />
+        </svg>
+        리소스 동기화 확인
+      </button>
+      <p class="footer-note">Designed & powered by Antigravity Engine</p>
+    </div>
+  </div>
+
+  <!-- Update Banner (Hidden by default) -->
+  <div id="update-banner" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 440px; background: rgba(17, 24, 39, 0.95); border: 1px solid var(--neon-cyan); box-shadow: 0 10px 30px var(--glow-cyan); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 16px; padding: 20px; z-index: 1000; animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+    <div style="font-weight: 600; font-size: 15px; margin-bottom: 8px; color: var(--text-primary);">🎉 새로운 업데이트가 준비되었습니다!</div>
+    <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.4;">업데이트를 설치하고 최신 화면을 적용합니다. (다운로드 완료 후에는 인터넷이 켜져 있어도 데이터 요금이 부과되지 않습니다.)</div>
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+      <button id="update-cancel" style="background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary); padding: 8px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: inherit;">나중에</button>
+      <button id="update-accept" style="background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple)); border: none; color: white; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; box-shadow: 0 4px 12px rgba(6, 182, 212, 0.25);">업데이트 적용</button>
+    </div>
+  </div>
+
+  <style>
+    @keyframes slide-up {
+      from { transform: translate(-50%, 50px); opacity: 0; }
+      to { transform: translate(-50%, 0); opacity: 1; }
+    }
+  </style>
+
+  <script>
+    // 1. Network Status Check
+    function updateNetworkStatus() {
+      const netText = document.getElementById('net-text');
+      const netDot = document.getElementById('net-dot');
+      if (navigator.onLine) {
+        netText.textContent = 'Online';
+        netDot.className = 'dot dot-green';
+      } else {
+        netText.textContent = 'Offline';
+        netDot.className = 'dot dot-red';
+      }
+    }
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+    updateNetworkStatus();
+
+    // 2. Load Config Settings (If available dynamically)
+    async function loadConfig() {
+      try {
+        const response = await fetch('./config.json');
+        if (response.ok) {
+          const config = await response.json();
+          document.getElementById('app-title').textContent = config.appName || 'webViewStudio';
+          document.getElementById('meta-appname').textContent = config.appName || 'webViewStudio';
+          document.getElementById('meta-packageid').textContent = config.packageName || 'com.rrrrro.webviewstudio';
+          
+          if (config.remoteUrl) {
+            document.getElementById('meta-target').textContent = 'Remote WebView';
+            document.getElementById('app-subtitle').textContent = `Target: ${config.remoteUrl}`;
+          } else {
+            document.getElementById('meta-target').textContent = 'Local Assets';
+          }
+        }
+      } catch (e) {
+        console.log("No config.json found yet or running in pure offline mode. Using default values.");
+      }
+    }
+    loadConfig();
+
+    // 3. Service Worker Registration with Update Prompt
+    const swDot = document.getElementById('sw-dot');
+    const swText = document.getElementById('sw-text');
+    let newWorker;
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+            swText.textContent = 'Active (Registered)';
+            swDot.className = 'dot dot-green';
+
+            // Check if there's a worker already waiting (installed earlier but page not refreshed)
+            if (registration.waiting) {
+              console.log('SW waiting detected on load');
+              swText.textContent = 'Update Available';
+              swDot.className = 'dot dot-cyan';
+              showUpdateBanner(registration.waiting);
+            }
+
+            // Listen for new worker updates installing
+            registration.addEventListener('updatefound', () => {
+              const installingWorker = registration.installing;
+              if (installingWorker) {
+                installingWorker.addEventListener('statechange', () => {
+                  if (installingWorker.state === 'installed') {
+                    if (navigator.serviceWorker.controller) {
+                      // New update is ready to be activated
+                      console.log('New update available and ready to activate.');
+                      swText.textContent = 'Update Available';
+                      swDot.className = 'dot dot-cyan';
+                      showUpdateBanner(installingWorker);
+                    } else {
+                      console.log('Content is cached for offline use.');
+                      swText.textContent = 'Active (Cached)';
+                      swDot.className = 'dot dot-green';
+                    }
+                  }
+                });
+              }
+            });
+          })
+          .catch(error => {
+            console.error('SW registration failed: ', error);
+            swText.textContent = 'Failed';
+            swDot.className = 'dot dot-red';
+          });
+      });
+
+      // Reload the page when the active service worker changes (SKIP_WAITING completed)
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+          refreshing = true;
+          console.log('[App] New service worker took control. Reloading...');
+          window.location.reload();
+        }
+      });
+    } else {
+      swText.textContent = 'Unsupported';
+      swDot.className = 'dot dot-red';
+    }
+
+    // Function to display the update banner
+    function showUpdateBanner(worker) {
+      newWorker = worker;
+      const banner = document.getElementById('update-banner');
+      banner.style.display = 'block';
+    }
+
+    // Event listener for update acceptance
+    document.getElementById('update-accept').addEventListener('click', () => {
+      if (newWorker) {
+        newWorker.postMessage({ type: 'SKIP_WAITING' });
+      }
+    });
+
+    // Event listener for update cancellation
+    document.getElementById('update-cancel').addEventListener('click', () => {
+      document.getElementById('update-banner').style.display = 'none';
+    });
+
+    // Refresh Action
+    document.getElementById('refresh-btn').addEventListener('click', () => {
+      // Reload assets
+      location.reload(true);
+    });
+  </script>
+</body>
+</html>

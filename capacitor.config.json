@@ -3,7 +3,7 @@
   "appName": "DailyBible",
   "webDir": "www",
   "server": {
-    "url": "https://www.wondaero.github.io/daily-bible",
+    "url": "https://wondaero.github.io/daily-bible/",
     "cleartext": true
   }
 }

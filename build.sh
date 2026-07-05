@@ -55,9 +55,9 @@ echo -e "\n${YELLOW}[Step 4] 빌드 아티팩트 추출 및 압축 중...${NC}"
 APK_SOURCE="android/app/build/outputs/apk/debug/app-debug.apk"
 AAB_SOURCE="android/app/build/outputs/bundle/debug/app-debug.aab"
 OUTPUT_DIR="build-output"
-APK_TARGET="${OUTPUT_DIR}/${SAFE_APP_NAME}-debug.apk"
-AAB_TARGET="${OUTPUT_DIR}/${SAFE_APP_NAME}-debug.aab"
-ZIP_TARGET="${OUTPUT_DIR}/${SAFE_APP_NAME}-debug.zip"
+APK_TARGET="${OUTPUT_DIR}/${SAFE_APP_NAME}.apk"
+AAB_TARGET="${OUTPUT_DIR}/${SAFE_APP_NAME}.aab"
+ZIP_TARGET="${OUTPUT_DIR}/${SAFE_APP_NAME}.zip"
 
 if [ -f "$APK_SOURCE" ]; then
     mkdir -p "$OUTPUT_DIR"

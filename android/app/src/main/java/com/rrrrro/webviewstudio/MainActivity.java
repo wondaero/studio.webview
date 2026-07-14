@@ -70,20 +70,17 @@ public class MainActivity extends BridgeActivity {
                     
                     // WebView 내에 JS를 주입하여 Blob을 Base64로 인코딩한 뒤 네이티브 브릿지로 전송
                     String javascript = "javascript:(function() {" +
-                            "   var xhr = new XMLHttpRequest();" +
-                            "   xhr.open('GET', '" + url + "', true);" +
-                            "   xhr.responseType = 'blob';" +
-                            "   xhr.onload = function() {" +
-                            "       if (xhr.status === 200) {" +
+                            "   fetch('" + url + "')" +
+                            "       .then(function(r) { return r.blob(); })" +
+                            "       .then(function(blob) {" +
                             "           var reader = new FileReader();" +
                             "           reader.onloadend = function() {" +
                             "               var base64 = reader.result;" +
                             "               BlobDownloadBridge.onBlobDataReceived(base64, '" + fileName + "', '" + mimetype + "');" +
                             "           };" +
-                            "           reader.readAsDataURL(xhr.response);" +
-                            "       }" +
-                            "   };" +
-                            "   xhr.send();" +
+                            "           reader.readAsDataURL(blob);" +
+                            "       })" +
+                            "       .catch(function(e) { console.error('Blob fetch error:', e); });" +
                             "})();";
                     webView.evaluateJavascript(javascript, null);
                 } else if (url.startsWith("data:")) {

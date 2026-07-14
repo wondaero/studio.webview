@@ -125,7 +125,19 @@ function updateConfig() {
           fs.writeFileSync(path.join(destFolder, 'ic_launcher_round.png'), fs.readFileSync(roundPath));
         }
       });
-      log("Reset app icons to default original assets.");
+
+      // Reset adaptive icons XML
+      const defaultXmlFolder = path.join(defaultIconsDir, 'mipmap-anydpi-v26');
+      const destXmlFolder = path.join(resBaseDir, 'mipmap-anydpi-v26');
+      if (fs.existsSync(defaultXmlFolder) && fs.existsSync(destXmlFolder)) {
+        ['ic_launcher.xml', 'ic_launcher_round.xml'].forEach(xmlFile => {
+          const srcXml = path.join(defaultXmlFolder, xmlFile);
+          if (fs.existsSync(srcXml)) {
+            fs.writeFileSync(path.join(destXmlFolder, xmlFile), fs.readFileSync(srcXml));
+          }
+        });
+      }
+      log("Reset app icons and adaptive XMLs to default original assets.");
     }
 
     // Step 5.2: Apply custom icons if custom-resources directory has icons
@@ -147,7 +159,17 @@ function updateConfig() {
       });
 
       if (copyCount > 0) {
-        log(`Applied ${copyCount} custom app icons from custom-resources/ to android/app/src/main/res/`);
+        // Remove adaptive icons XML so that Android OS falls back to regular PNG launcher icons
+        const destXmlFolder = path.join(resBaseDir, 'mipmap-anydpi-v26');
+        if (fs.existsSync(destXmlFolder)) {
+          ['ic_launcher.xml', 'ic_launcher_round.xml'].forEach(xmlFile => {
+            const xmlPath = path.join(destXmlFolder, xmlFile);
+            if (fs.existsSync(xmlPath)) {
+              fs.unlinkSync(xmlPath);
+            }
+          });
+        }
+        log(`Applied ${copyCount} custom app icons from custom-resources/ to android/app/src/main/res/ (disabled adaptive XMLs)`);
       } else {
         log(`Using default app icons (no matching android-icon-*.png found in custom-resources/)`);
       }

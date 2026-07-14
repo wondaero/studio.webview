@@ -14,3 +14,6 @@ android/local.properties
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Custom App Resources (Ignore actual custom icons, track directory placeholder only)
+custom-resources/*.png

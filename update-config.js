@@ -95,6 +95,67 @@ function updateConfig() {
     log(`Android strings.xml not found. Run 'npx cap add android' first.`);
   }
 
+  // 5. App Icon Resolution (Reset to default first, then apply custom if exists)
+  const defaultIconsDir = path.join(__dirname, 'default-resources');
+  const customIconsDir = path.join(__dirname, 'custom-resources');
+  const resBaseDir = path.join(__dirname, 'android', 'app', 'src', 'main', 'res');
+
+  if (fs.existsSync(resBaseDir)) {
+    const iconMappings = [
+      { src: 'android-icon-48x48.png', dest: 'mipmap-mdpi' },
+      { src: 'android-icon-72x72.png', dest: 'mipmap-hdpi' },
+      { src: 'android-icon-96x96.png', dest: 'mipmap-xhdpi' },
+      { src: 'android-icon-144x144.png', dest: 'mipmap-xxhdpi' },
+      { src: 'android-icon-192x192.png', dest: 'mipmap-xxxhdpi' }
+    ];
+
+    // Step 5.1: Always reset to default icons first
+    if (fs.existsSync(defaultIconsDir)) {
+      iconMappings.forEach(m => {
+        const defaultFolder = path.join(defaultIconsDir, m.dest);
+        const destFolder = path.join(resBaseDir, m.dest);
+        
+        const launcherPath = path.join(defaultFolder, 'ic_launcher.png');
+        const roundPath = path.join(defaultFolder, 'ic_launcher_round.png');
+        
+        if (fs.existsSync(launcherPath) && fs.existsSync(destFolder)) {
+          fs.writeFileSync(path.join(destFolder, 'ic_launcher.png'), fs.readFileSync(launcherPath));
+        }
+        if (fs.existsSync(roundPath) && fs.existsSync(destFolder)) {
+          fs.writeFileSync(path.join(destFolder, 'ic_launcher_round.png'), fs.readFileSync(roundPath));
+        }
+      });
+      log("Reset app icons to default original assets.");
+    }
+
+    // Step 5.2: Apply custom icons if custom-resources directory has icons
+    if (fs.existsSync(customIconsDir)) {
+      let copyCount = 0;
+      iconMappings.forEach(m => {
+        const srcPath = path.join(customIconsDir, m.src);
+        const destFolder = path.join(resBaseDir, m.dest);
+        
+        if (fs.existsSync(srcPath)) {
+          if (!fs.existsSync(destFolder)) {
+            fs.mkdirSync(destFolder, { recursive: true });
+          }
+          const fileData = fs.readFileSync(srcPath);
+          fs.writeFileSync(path.join(destFolder, 'ic_launcher.png'), fileData);
+          fs.writeFileSync(path.join(destFolder, 'ic_launcher_round.png'), fileData);
+          copyCount++;
+        }
+      });
+
+      if (copyCount > 0) {
+        log(`Applied ${copyCount} custom app icons from custom-resources/ to android/app/src/main/res/`);
+      } else {
+        log(`Using default app icons (no matching android-icon-*.png found in custom-resources/)`);
+      }
+    } else {
+      log(`Using default app icons (custom-resources/ folder not found)`);
+    }
+  }
+
   log(`Configuration update completed successfully!`);
 }
 

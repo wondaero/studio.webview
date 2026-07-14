@@ -1,0 +1,3 @@
+# This directory is for custom Android app icons.
+# Place your 'android-icon-*.png' files here to automatically apply them on build.
+# If empty, default Capacitor icons will be used.

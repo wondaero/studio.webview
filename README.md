@@ -49,6 +49,22 @@ npm install
   * **빈 값(`""`)**으로 남겨두면, `www/` 폴더 내의 로컬 HTML/CSS/JS 에셋을 로드하는 오프라인 앱 모드로 작동합니다.
 * **`offlineFallback`**: 로컬 모드에서 서비스 워커 기반 스마트 캐싱 적용 여부를 결정합니다.
 
+### 2.1 커스텀 앱 아이콘 지정 및 변경 매뉴얼 (선택사항)
+이 프로젝트는 매번 빌드할 때마다 자동으로 커스텀 이미지의 존재 여부를 판단하여 네이티브 앱 아이콘을 교환해 줍니다. 
+
+1. **아이콘 적용 방법:**
+   * 프로젝트 루트에 기본 생성되어 있는 [custom-resources/](file:///Users/ro/Desktop/project1/mine/studio.webview/custom-resources) 폴더 안에 해상도별 이미지 파일(PNG) 5장을 규격에 맞춰 넣어둡니다.
+     * `android-icon-48x48.png` (mdpi 대응)
+     * `android-icon-72x72.png` (hdpi 대응)
+     * `android-icon-96x96.png` (xhdpi 대응)
+     * `android-icon-144x144.png` (xxhdpi 대응)
+     * `android-icon-192x192.png` (xxxhdpi 대응)
+2. **아이콘 변경 방법:**
+   * 나중에 아이콘 디자인을 변경하고 싶다면, 단순히 **위의 `.png` 파일들만 동일한 이름으로 덮어쓰기(교체)** 하시면 빌드 시 알아서 바뀝니다.
+   * 별도의 설정을 건드리거나 폴더 내의 `.gitkeep` 파일을 수정하실 필요가 전혀 없습니다.
+3. **기본 순정 아이콘 복원 (Reset):**
+   * 커스텀 아이콘을 제거하고 원래의 Capacitor 기본 로고(순정)로 되돌리고 싶다면, [custom-resources/](file:///Users/ro/Desktop/project1/mine/studio.webview/custom-resources) 폴더 안의 이미지 파일(`.png` 5장)들만 삭제하고 다시 빌드하시면 즉시 원본 상태로 롤백 컴파일됩니다.
+
 ### 3. 원클릭 빌드 실행
 설정을 마치면 운영체제(OS)에 맞춰 자동 빌드 스크립트를 로컬 터미널에서 실행합니다.
 
